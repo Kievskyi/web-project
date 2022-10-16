@@ -20,7 +20,6 @@ import java.util.Map;
 @WebServlet(name = "ControllerServlet", value = "/logic")
 public class ControllerServlet extends HttpServlet {
 
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         final String questPageURL = "/questPage.jsp";
@@ -33,7 +32,7 @@ public class ControllerServlet extends HttpServlet {
         String questionForCurrentStep;
         List<String> answersForCurrentStep;
         int usersChoice = convertChoiceToInteger(request);
-        Step currentStep = null;
+        Step currentStep ;
 
         if (usersChoice == 0) {
             currentStep = (Step) session.getAttribute("step");
@@ -58,7 +57,6 @@ public class ControllerServlet extends HttpServlet {
             dispatcher.forward(request, response);
         }
 
-        //проверка на поражение среди раундов
         if (checkWin(currentStep, answers.getAllAnswersFromMap(), answersForCurrentStep.get(usersChoice - 1)) == Choose.LOOSE) {
             RequestDispatcher dispatcher = context.getRequestDispatcher(loosePageURL);
             dispatcher.forward(request, response);
@@ -68,11 +66,6 @@ public class ControllerServlet extends HttpServlet {
 
         RequestDispatcher dispatcher = context.getRequestDispatcher(questPageURL);
         dispatcher.forward(request, response);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
     }
 
     private int convertChoiceToInteger(HttpServletRequest request) {

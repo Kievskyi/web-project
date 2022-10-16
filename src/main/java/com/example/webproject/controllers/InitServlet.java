@@ -1,6 +1,5 @@
 package com.example.webproject.controllers;
 
-
 import com.example.webproject.models.Step;
 
 import javax.servlet.ServletException;
@@ -12,11 +11,11 @@ import java.io.IOException;
 public class InitServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         final String logicServletURL = "/logic";
-        HttpSession session = request.getSession();
+        HttpSession currentSession = request.getSession();
         String usernameFromRequest = request.getParameter("username");
-        session.setAttribute("username", usernameFromRequest);
+        currentSession.setAttribute("username", usernameFromRequest);
         String countOfGames = null;
 
         Cookie [] cookies = request.getCookies();
@@ -32,20 +31,20 @@ public class InitServlet extends HttpServlet {
             countOfGamesCookie.setMaxAge(60 * 60 * 24 * 30 * 12);
             countOfGamesCookie.setPath("/");
             response.addCookie(countOfGamesCookie);
-            session.setAttribute("countOfGames", countOfGames);
+            currentSession.setAttribute("countOfGames", countOfGames);
         } else  {
-            session.setAttribute("countOfGames", countOfGames);
+            currentSession.setAttribute("countOfGames", countOfGames);
         }
 
-        Step currentStep = extractStepFromSession(session);
-        session.setAttribute("step", currentStep);
+        Step currentStep = extractStepFromSession(currentSession);
+        currentSession.setAttribute("step", currentStep);
 
         response.sendRedirect(logicServletURL);
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        doGet(req, resp);
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        doGet(request, response);
     }
 
     private int extractCountOfGames(HttpSession session) {

@@ -5,7 +5,6 @@
 <html>
 <head>
     <title>Quest game</title>
-        <link href="${pageContext.request.contextPath}/css/style.css" rel="stylesheet">
 </head>
 <body>
 <br/>
